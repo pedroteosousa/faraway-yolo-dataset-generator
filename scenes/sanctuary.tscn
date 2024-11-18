@@ -1,0 +1,28 @@
+[gd_scene load_steps=6 format=3 uid="uid://bk8tyk61ox402"]
+
+[ext_resource type="Script" path="res://scripts/card.gd" id="1_5xpbo"]
+[ext_resource type="Shader" path="res://shaders/cards.gdshader" id="2_2c4o8"]
+[ext_resource type="SpriteFrames" uid="uid://dypnr42dg2rxu" path="res://assets/sanctuary_cards.tres" id="3_0622e"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_inm5a"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fffl1"]
+shader = ExtResource("2_2c4o8")
+shader_parameter/sheet_columns = 10
+shader_parameter/sheet_rows = 5
+shader_parameter/corner_scale = 0.166
+
+[node name="Sanctuary" type="Sprite3D"]
+texture = SubResource("ViewportTexture_inm5a")
+script = ExtResource("1_5xpbo")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+transparent_bg = true
+size = Vector2i(300, 300)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="SubViewport"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_fffl1")
+position = Vector2(150, 150)
+sprite_frames = ExtResource("3_0622e")
