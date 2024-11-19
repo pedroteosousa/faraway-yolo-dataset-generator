@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/card.gd" id="1_vwr1o"]
 [ext_resource type="Shader" path="res://shaders/cards.gdshader" id="2_vtpji"]
-[ext_resource type="SpriteFrames" uid="uid://4wa62px30dat" path="res://assets/region_card.tres" id="3_gwjl6"]
+[ext_resource type="SpriteFrames" uid="uid://cqy3pwku3grh0" path="res://assets/region_cards.tres" id="3_2616k"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_inm5a"]
 viewport_path = NodePath("SubViewport")
@@ -10,7 +10,7 @@ viewport_path = NodePath("SubViewport")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ocxn6"]
 shader = ExtResource("2_vtpji")
 shader_parameter/sheet_columns = 10
-shader_parameter/sheet_rows = 7
+shader_parameter/sheet_rows = 8
 shader_parameter/corner_scale = 0.135
 
 [node name="Region" type="Sprite3D"]
@@ -25,4 +25,4 @@ size = Vector2i(300, 300)
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_ocxn6")
 position = Vector2(150, 150)
-sprite_frames = ExtResource("3_gwjl6")
+sprite_frames = ExtResource("3_2616k")
