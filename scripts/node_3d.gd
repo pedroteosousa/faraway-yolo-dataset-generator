@@ -23,6 +23,9 @@ var sanctuary_card_scene = preload("res://scenes/sanctuary.tscn")
 @export var card_space_size: Vector3 = Vector3(17.77, 10, 3)	
 @export var card_rotation_limits: Vector3 = Vector3(45, 10, 45)
 
+@export var allow_overlap: bool = true
+@export var max_iou: float = 0.2
+
 @export var max_cards = 16
 
 var data_type = "train"
@@ -197,12 +200,41 @@ func randomize_cards():
 		card.rotate_z(rng.randf_range(-card_rotation_limits.z, card_rotation_limits.z) / 180 * PI)
 	return cards
 
+func area_2d(aabb: AABB):
+	return aabb.size.x * aabb.size.y
+
+func iou(box1, box2):
+	var p1 = Vector3((box1[0] + box1[1])/2.0, (box1[2] + box1[3])/2.0, 0)
+	var p2 = Vector3((box2[0] + box2[1])/2.0, (box2[2] + box2[3])/2.0, 0)
+	var s1 = Vector3(box1[1] - box1[0], box1[3] - box1[2], 0)
+	var s2 = Vector3(box2[1] - box2[0], box2[3] - box2[2], 0)
+	var aabb1 = AABB(p1, s1)
+	var aabb2 = AABB(p2, s2)
+	var inter = aabb1.intersection(aabb2)
+	var inter_area = area_2d(inter)
+	var union_area = area_2d(aabb1) + area_2d(aabb2) - inter_area
+	return inter_area / union_area
+
 func get_named_bounding_boxes():
+	var screen_boxes = get_bounding_boxes(false)
 	var boxes = get_bounding_boxes()
 	var named_boxes = []
+	var skipped = []
 	for i in range(len(card_ids)):
 		var id = card_ids[i]
 		var card: Sprite3D = %Cards.get_child(i)
+		if !allow_overlap:
+			var should_skip = false
+			for j in range(i):
+				if skipped[j]:
+					continue
+				if iou(screen_boxes[j], screen_boxes[i]) > max_iou:
+					should_skip = true
+					break
+			skipped.append(should_skip)
+			if should_skip:
+				card.hide()
+				continue
 		named_boxes.append([id, boxes[i]])
 	return named_boxes
 
@@ -221,6 +253,10 @@ func save_bounding_boxes(boxes):
 	var file = FileAccess.open(file_path, FileAccess.WRITE)
 	file.store_string(text)
 	file.close()
+
+func handle_overlaps():
+	
+	pass
 
 func randomize_and_save_bounding_boxes():
 	var rng = RandomNumberGenerator.new()

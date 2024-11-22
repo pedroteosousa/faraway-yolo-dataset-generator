@@ -8,10 +8,13 @@
 
 [node name="Node3D" type="Node3D"]
 script = ExtResource("1_k4anw")
-debug = false
 train_data_size = 3600
 val_data_size = 1200
 test_data_size = 1200
+card_rotation_limits = Vector3(5, 5, 10)
+allow_overlap = false
+max_iou = 0.05
+max_cards = 20
 
 [node name="Camera" type="Camera3D" parent="."]
 unique_name_in_owner = true
