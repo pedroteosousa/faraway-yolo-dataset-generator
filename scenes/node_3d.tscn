@@ -8,9 +8,11 @@
 
 [node name="Node3D" type="Node3D"]
 script = ExtResource("1_k4anw")
+debug = false
 train_data_size = 7200
 val_data_size = 2400
 test_data_size = 2400
+card_space_size = Vector3(14.4, 8.1, 0)
 card_rotation_limits = Vector3(5, 5, 10)
 allow_overlap = false
 max_iou = 0.0
